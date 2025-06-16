@@ -1,0 +1,111 @@
+<style>
+.content {
+    display: flex;
+}
+.patientData {
+    width: 250px;
+    height: 200px;
+    text-align:center
+}
+.bookingDate {
+    width: 500px;
+}
+.bookingHead {
+    text-align:center
+}
+.bookingBody {
+    line-height: 4.0;
+    text-align:center
+}
+
+.title {
+    text-align:center
+}
+
+.screen {
+    margin: auto auto;
+    width:750px;
+}
+
+</style>
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>患者一覧</title>
+</head>
+<body>
+    <div class="screen">
+        <div class="content" >
+            <div>
+                <div class="title">
+                    <h3> カルテ詳細</h3>
+                </div>
+                
+                <table class="patientData">
+                    <tr>
+                        <th>名前</th>
+                        <td th:text="${patients.name}"></td> 
+                    </tr>
+                    <tr>
+                        <th>年齢</th>
+                        <td th:text="${patients.age}"></td> 
+                    </tr>
+                    <tr>
+                        <th>性別</th>
+                        <td th:text="${patients.gender}"></td> 
+                    </tr>
+                    <tr>
+                        <th>血液型</th>
+                        <td th:text="${patients.bloodType}"></td> 
+                    </tr>
+                    <tr>
+                        <th>病名</th>
+                        <td th:text="${patients.diseaseName}"></td> 
+                    </tr>
+                    <tr>
+                        <th>症状</th>
+                        <td th:text="${patients.symptoms}"></td> 
+                    </tr>
+                </table>
+            </div>
+
+            <div>
+                <div class="title">
+                    <h3> 来院記録・予定</h3>
+                </div>
+
+                <table class="bookingDate">
+                    <thead class="bookingHead">
+                        <th>コース</th>
+                    </thead>
+                    <tbody class="bookingBody">
+                        <tr th:each="bookingList : ${bookingLists}"> 
+                            <td><span th:text="${bookingList.treatmentDetails}">music</span></td>
+                            <td><span th:text="${bookingList.bookingDate}">music title</span></td>
+                            <td><span th:text="${bookingList.bookingTime}">music duration</span></td>
+                            <td><span th:text="${bookingList.place}">music place</span></td>
+                            <td>
+                                <form th:action="@{/patients/{id}/bookingLists/{bookingId}/delete(id=${patients.id}, bookingId=${bookingList.bookingId})}" method="post">
+                                    <button type="submit">削除</button>
+                                </form>
+                            </td>
+                            <td>
+                                <form th:action="@{/patients/{id}/bookingLists/{bookingId}/edit(id=${patients.id}, bookingId=${bookingList.bookingId})}" method="post">
+                                    <button type="submit">編集</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="title">
+                    <a th:href="@{/patients/{id}/bookingLists/new(id=${patients.id})}">予約追加</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    <a href="/patients">一覧に戻る</a>
+</body>
+</html>

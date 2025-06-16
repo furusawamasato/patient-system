@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>患者一覧</title>
+</head>
+<body>
+    <h3>患者登録</h3>
+    <form th:action="@{/patients/new}" th:object="${patientForm}" method="post">
+        <div>
+            <label for="name">名前：</label>
+            <input type="text" id="name" name="name" th:field="*{name}">
+        </div>
+        <div>
+            <label for="age">年齢：</label>
+            <input type="age" id="age" name="age" th:field="*{age}">
+        </div>
+        <div>
+            <label>性別：</label>
+            <select id="gender" name="gender" th:field="*{gender}">
+                <option value= "男性">男性</option>
+                <option value= "女性">女性</option>
+            </select>
+        </div>
+        <div>
+            <label>血液型：</label>
+            <select id="bloodType" name="bloodType" th:field="*{bloodType}">
+                <option value= "A型">A型</option>
+                <option value= "B型">B型</option>
+                <option value= "O型">O型</option>
+                <option value= "AB型">AB型</option>
+            </select>
+        </div>
+        <div>
+            <label for="diseaseName">病名：</label>
+            <input type="text" id="diseaseName" name="diseaseName" th:field="*{diseaseName}">
+        </div>
+        <div>
+            <label for="symptoms">症状：</label>
+            <input type="text" id="symptoms" name="symptoms" th:field="*{symptoms}">
+        </div>
+        <button type="submit">追加</button>
+    </form>
+</body>
+</html>
