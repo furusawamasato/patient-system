@@ -9,33 +9,23 @@ import com.example.patient_system.form.BookingListForm;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.web.bind.annotation.RequestParam;
-import org.thymeleaf.expression.Lists;
-import org.springframework.web.bind.annotation.RequestBody;
+import java.util.*;
 
 @Controller
 @RequestMapping("/patients")
 public class PatientController {
+
     private final PatientService patientService;
     private final BookingListService bookingListService;
 
-    public  PatientController(PatientService patientService, BookingListService bookingListService) {
+    public PatientController(PatientService patientService, BookingListService bookingListService) {
         this.patientService = patientService;
         this.bookingListService = bookingListService;
     }
 
-    //基礎画面
+    // 患者一覧画面
     @GetMapping
     public String patientList(Model model) {
         List<Patient> patients = patientService.getAllPatients();
@@ -43,101 +33,88 @@ public class PatientController {
 
         List<BookingList> bookingLists = bookingListService.selectLatestBookingDate();
         Map<Long, BookingList> map = new HashMap<>();
-        for (BookingList bookingList : bookingLists) {
-            if (map.get(bookingList.getId()) == null) {
-                map.put(bookingList.getId(), bookingList);
-            }
-
-            else if (map.get(bookingList.getId()).getBookingDate().compareTo(bookingList.getBookingDate()) < 0) {
-                map.put(bookingList.getId(), bookingList);
-            }
-
-            else if (map.get(bookingList.getId()).getBookingDate().compareTo(bookingList.getBookingDate()) == 0) {
-                if (map.get(bookingList.getId()).getBookingTime().compareTo(bookingList.getBookingTime()) < 0) {
-                    map.put(bookingList.getId(), bookingList);
+        for (BookingList b : bookingLists) {
+            map.merge(b.getId(), b, (existing, newVal) -> {
+                if (existing.getBookingDate().isBefore(newVal.getBookingDate()) ||
+                    (existing.getBookingDate().isEqual(newVal.getBookingDate()) &&
+                     existing.getBookingTime().isBefore(newVal.getBookingTime()))) {
+                    return newVal;
                 }
-            }
+                return existing;
+            });
         }
 
-        bookingLists = new ArrayList<>(map.values());
-        model.addAttribute("bookingLists", bookingLists);
-
+        model.addAttribute("bookingLists", new ArrayList<>(map.values()));
         return "patient/patient-list";
     }
 
-    //基礎画面(追加)
+    // 新規患者登録フォーム表示
     @GetMapping("/new")
     public String showForm(Model model) {
-        PatientForm patientForm = new PatientForm();
-        model.addAttribute("patientForm", patientForm);
+        model.addAttribute("patientForm", new PatientForm());
         return "patient/patient-form";
     }
 
+    // 新規患者登録
     @PostMapping("/new")
-    public String createLists(PatientForm patientForm) {
+    public String createPatient(PatientForm patientForm) {
         patientService.createPatients(patientForm);
-        
         return "redirect:/patients";
     }
 
-
-    //詳細画面
+    // 詳細表示
     @GetMapping("/{id}")
-    public String lists(@PathVariable long id, Model model) {
-        Patient patients = patientService.getPatientsById(id);
-        model.addAttribute("patients", patients);
-
+    public String patientDetail(@PathVariable long id, Model model) {
+        Patient patient = patientService.getPatientsById(id);
         List<BookingList> bookingLists = bookingListService.getBookingListByListId(id);
+
+        model.addAttribute("patients", patient);
         model.addAttribute("bookingLists", bookingLists);
         return "patient/patient-detail";
     }
 
-
-    //基本画面(削除)
+    // 患者削除
     @PostMapping("/{id}/delete")
-    public String deleteLists(@PathVariable long id) {
+    public String deletePatient(@PathVariable long id) {
         patientService.deletePatients(id);
         return "redirect:/patients";
     }
 
-    //詳細画面(追加)
+    // 予約追加フォーム表示
     @GetMapping("/{id}/bookingLists/new")
     public String createBookingListForm(@PathVariable long id, Model model) {
-        BookingListForm bookingListForm = new BookingListForm();
-        bookingListForm.setId(id);
-        model.addAttribute("bookingListForm", bookingListForm);
-
+        BookingListForm form = new BookingListForm();
+        form.setId(id);
+        model.addAttribute("bookingListForm", form);
         return "bookingList/bookingList-form";
     }
 
+    // 予約追加処理
     @PostMapping("/{id}/bookingLists/new")
-        public String createBookingList(@PathVariable long id, BookingListForm bookingListForm) {
-        bookingListService.createBookingList(bookingListForm);
+    public String createBookingList(@PathVariable long id, BookingListForm form) {
+        bookingListService.createBookingList(form);
         return "redirect:/patients/" + id;
     }
 
-
-    //詳細画面(削除)
+    // 予約削除
     @PostMapping("/{id}/bookingLists/{bookingId}/delete")
     public String deleteBookingList(@PathVariable long id, @PathVariable long bookingId) {
         bookingListService.deleteBookingList(bookingId);
         return "redirect:/patients/" + id;
     }
 
+    // 編集フォーム表示
+    @GetMapping("/{id}/bookingLists/{bookingId}/edit")
+    public String editPatient(@PathVariable long id, @PathVariable long bookingId, Model model) {
+        Patient patient = patientService.getPatientsById(id);
+        model.addAttribute("patient", patient);
+        return "patient/patient-edit";
+    }
 
-    // //詳細画面(編集)
-    // @GetMapping("/{id}/bookingLists/{bookingId}/edit")
-    // public String editPatient(@PathVariable long id, @PathVariable long bookingId, Model model) {
-    //     Patient patient = patientService.getPatientsById(id);
-
-    //     model.addAttribute("patient", patient);
-
-    //     return "patient/patient-edit";
-    // }
-
-    // @PostMapping("/{id}/bookingLists/{bookingId}/edit")
-    // public String updatePatient(@PathVariable long id, @PathVariable long bookingId, Patient patient) {
-    //     patientService.updatePatient(id, patient);
-    //     return "redirect:/patients" + id;
-    // }
+    // 編集保存
+    @PostMapping("/{id}/bookingLists/{bookingId}/edit")
+    public String updatePatient(@PathVariable long id, @PathVariable long bookingId, Patient patient) {
+        patientService.updatePatient(id, patient);
+        return "redirect:/patients/" + id;
+    }
 }

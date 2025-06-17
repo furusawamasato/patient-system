@@ -1,28 +1,46 @@
 <!DOCTYPE html>
-<html lang="ja" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8" />
-    <title>患者一覧</title>
-</head>
-<body>
-<h3>ログイン</h3>
-<a th:href="@{/register}">ユーザ登録</a>
-<div th:if="${param.error}" style="color:red">
-    ユーザ名、またはパスワードが違います
-</div>
+ <html lang="ja" xmlns:th="http://www.thymeleaf.org">
+ <head th:replace="~{layout :: head('ログイン')}">
+          <!-- BootstrapのCSSを読み込み -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+ </head>
+ <body>
+
+ <div th:replace="~{layout :: header}"></div>
+    <!-- 背景設定（ヘッダー） -->
+    <div class="bg_pattern Boxes"></div>
+    <!-- メインコンテンツ-->
+    <div class="container py-5 bg_pattern Boxes">
+    <h3>ログイン</h3>
+    <!-- エラーメッセージ-->
+    <div th:if="${param.error}" style="color:red">
+        ユーザ名、またはパスワードが違います
+    </div>
+    <!-- 成功メッセージ-->
     <div th:if="${param.register}" style="color:blue">
-    登録に成功しました
+        登録に成功しました
+    </div>
+
+    <!--ログインフォーム-->
+    <form th:action="@{/login}" method="post">
+        <div class="form-floating mb-3 w-50">
+            <input type="text" class="form-control" id="username" name="username" placeholder="ユーザー名">
+            <label for="username">ユーザ名</label>
+        </div>
+        
+    <div class="form-floating mb-3 w-50">
+      <input type="password" class="form-control" id="password" name="password" placeholder="パスワード">
+      <label for="password"><i class="bi bi-person-fill-lock me-2"></i>パスワード</label>
+    </div>
+
+        <button type="submit" class="btn btn-primary">ログイン</button>
+    </form>
 </div>
-<form th:action="@{/login}" method="post">
-    <div>
-        <label for="username">ユーザ名：</label>
-        <input type="text" id="username" name="username">
-    </div>
-    <div>
-        <label for="password">パスワード：</label>
-        <input type="password" id="password" name="password">
-    </div>
-    <button type="submit">ログイン</button>
-</form>
+
+    <!--footer-->
+    <div th:replace="~{layout :: footer}"></div>
+        
+    <!-- BootstrapのJS（必要に応じて） -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
