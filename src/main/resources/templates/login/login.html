@@ -23,19 +23,22 @@
 
     <!--ログインフォーム-->
     <form th:action="@{/login}" method="post">
-        <div class="form-floating mb-3 w-50">
-            <input type="text" class="form-control" id="username" name="username" placeholder="ユーザー名">
-            <label for="username">ユーザ名</label>
-        </div>
-        
     <div class="form-floating mb-3 w-50">
-      <input type="password" class="form-control" id="password" name="password" placeholder="パスワード">
-      <label for="password"><i class="bi bi-person-fill-lock me-2"></i>パスワード</label>
+        <input type="text" class="form-control" id="username" name="username" placeholder="ユーザー名">
+        <label for="username">ユーザ名</label>
     </div>
 
+    <div class="form-floating mb-3 w-50">
+        <input type="password" class="form-control" id="password" name="password" placeholder="パスワード">
+        <label for="password"><i class="bi bi-person-fill-lock me-2"></i>パスワード</label>
+    </div>
+
+    <!-- ボタンを横並びに -->
+    <div class="d-flex gap-2">
         <button type="submit" class="btn btn-primary">ログイン</button>
-    </form>
-</div>
+        <a th:href="@{/register}" class="btn btn-outline-secondary">新規登録</a>
+    </div>
+</form>
 
     <!--footer-->
     <div th:replace="~{layout :: footer}"></div>

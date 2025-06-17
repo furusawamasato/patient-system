@@ -3,42 +3,37 @@
 <head>
     <meta charset="UTF-8" />
     <title>患者詳細</title>
+
+    <!-- Bootstrap CDN（必要に応じて変更） -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <style>
-        .content {
+        .content-wrapper {
             display: flex;
+            gap: 2rem;
         }
-        .patientData {
-            width: 250px;
-            height: 200px;
+        .section-title {
             text-align: center;
+            margin-bottom: 1rem;
         }
-        .bookingDate {
-            width: 500px;
-        }
-        .bookingHead {
-            text-align: center;
-        }
-        .bookingBody {
-            line-height: 2.5;
-            text-align: center;
-        }
-        .title {
-            text-align: center;
-        }
-        .screen {
-            margin: auto auto;
-            width: 750px;
+        .card-box {
+            padding: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 8px;
         }
     </style>
 </head>
 <body>
-<div class="screen">
-    <div class="content">
-        <div>
-            <div class="title">
-                <h3>カルテ詳細</h3>
-            </div>
-            <table class="patientData">
+<div class="container mt-5">
+
+    <h2 class="text-center mb-4">患者詳細</h2>
+
+    <div class="content-wrapper">
+
+        <!-- 患者情報セクション -->
+        <div class="col-md-4 card-box">
+            <h5 class="section-title">カルテ詳細</h5>
+            <table class="table table-sm">
                 <tr><th>名前</th><td th:text="${patients.name}"></td></tr>
                 <tr><th>年齢</th><td th:text="${patients.age}"></td></tr>
                 <tr><th>性別</th><td th:text="${patients.gender}"></td></tr>
@@ -47,21 +42,17 @@
                 <tr><th>症状</th><td th:text="${patients.symptoms}"></td></tr>
             </table>
 
-            <!-- 患者情報編集 -->
-            <div class="title" style="margin-top: 1rem;">
-                <form th:action="@{/patients/{id}/edit(id=${patients.id})}" method="get">
-                    <button type="submit">患者情報を編集</button>
-                </form>
-            </div>
+            <!-- 患者情報編集ボタン -->
+            <form th:action="@{/patients/{id}/edit(id=${patients.id})}" method="get" class="text-center mt-3">
+                <button type="submit" class="btn btn-warning">患者情報を編集</button>
+            </form>
         </div>
 
-        <div>
-            <div class="title">
-                <h3>来院記録・予定</h3>
-            </div>
-
-            <table class="bookingDate">
-                <thead class="bookingHead">
+        <!-- 予約リストセクション -->
+        <div class="col-md-8 card-box">
+            <h5 class="section-title">来院記録・予定</h5>
+            <table class="table table-bordered text-center">
+                <thead class="table-light">
                     <tr>
                         <th>診療内容</th>
                         <th>予約日</th>
@@ -70,37 +61,42 @@
                         <th colspan="2">操作</th>
                     </tr>
                 </thead>
-                <tbody class="bookingBody">
+                <tbody>
                     <tr th:each="bookingList : ${bookingLists}">
-                        <td th:text="${bookingList.treatmentDetails}">治療内容</td>
-                        <td th:text="${bookingList.bookingDate}">日付</td>
-                        <td th:text="${bookingList.bookingTime}">時間</td>
-                        <td th:text="${bookingList.place}">場所</td>
+                        <td th:text="${bookingList.treatmentDetails}"></td>
+                        <td th:text="${bookingList.bookingDate}"></td>
+                        <td th:text="${bookingList.bookingTime}"></td>
+                        <td th:text="${bookingList.place}"></td>
                         <td>
                             <form th:action="@{/patients/{id}/bookingLists/{bookingId}/delete(id=${patients.id}, bookingId=${bookingList.bookingId})}" method="post">
-                                <button type="submit">削除</button>
+                                <button type="submit" class="btn btn-danger btn-sm">削除</button>
                             </form>
                         </td>
                         <td>
                             <form th:action="@{/patients/{id}/bookingLists/{bookingId}/edit(id=${patients.id}, bookingId=${bookingList.bookingId})}" method="get">
-                                <button type="submit">編集</button>
+                                <button type="submit" class="btn btn-secondary btn-sm">編集</button>
                             </form>
                         </td>
                     </tr>
                 </tbody>
             </table>
 
-            <div class="title" style="margin-top: 1rem;">
-                <a th:href="@{/patients/{id}/bookingLists/new(id=${patients.id})}">予約追加</a>
+            <!-- 予約追加リンク -->
+            <div class="text-center mt-3">
+                <a th:href="@{/patients/{id}/bookingLists/new(id=${patients.id})}" class="btn btn-success">予約追加</a>
             </div>
         </div>
     </div>
 
-    <div style="text-align: center; margin-top: 2rem;">
+    <!-- 戻るボタン -->
+    <div class="text-center mt-4">
         <form th:action="@{/patients}" method="get">
-            <button type="submit">一覧に戻る</button>
+            <button type="submit" class="btn btn-outline-primary">一覧に戻る</button>
         </form>
     </div>
 </div>
+
+<!-- Bootstrap Script -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
