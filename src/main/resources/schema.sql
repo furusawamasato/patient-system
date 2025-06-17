@@ -1,4 +1,4 @@
-CREATE TABLE patients (
+CREATE TABLE IF NOT EXISTS patients (
     id INTEGER AUTO_INCREMENT PRIMARY KEY,
     name varchar(10),
     age INT,
@@ -12,7 +12,7 @@ CREATE TABLE patients (
     PMH varchar(100)
 );
 
-CREATE TABLE bookingLists (
+CREATE TABLE IF NOT EXISTS bookingLists (
     booking_id INTEGER AUTO_INCREMENT PRIMARY KEY,
     id INTEGER NOT NULL,
     treatmentDetails varchar(20),
@@ -23,7 +23,7 @@ CREATE TABLE bookingLists (
     FOREIGN KEY (id) REFERENCES patients(id)  ON DELETE CASCADE
 );
 
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
     user_id INTEGER AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(255) UNIQUE NOT NULL,
     password VARCHAR(60) NOT NULL,
