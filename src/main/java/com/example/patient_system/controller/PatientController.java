@@ -103,18 +103,18 @@ public class PatientController {
         return "redirect:/patients/" + id;
     }
 
-    // 編集フォーム表示
-    @GetMapping("/{id}/bookingLists/{bookingId}/edit")
-    public String editPatient(@PathVariable long id, @PathVariable long bookingId, Model model) {
-        Patient patient = patientService.getPatientsById(id);
-        model.addAttribute("patient", patient);
-        return "patient/patient-edit";
-    }
+// 患者情報の編集画面表示
+@GetMapping("/{id}/edit")
+public String editPatientInfo(@PathVariable long id, Model model) {
+    Patient patient = patientService.getPatientsById(id);
+    model.addAttribute("patient", patient);
+    return "patient/patient-edit";  // 編集ページ
+}
 
-    // 編集保存
-    @PostMapping("/{id}/bookingLists/{bookingId}/edit")
-    public String updatePatient(@PathVariable long id, @PathVariable long bookingId, Patient patient) {
-        patientService.updatePatient(id, patient);
-        return "redirect:/patients/" + id;
-    }
+// 患者情報の編集保存
+@PostMapping("/{id}/edit")
+public String updatePatientInfo(@PathVariable long id, Patient patient) {
+    patientService.updatePatient(id, patient);
+    return "redirect:/patients/" + id;
+}
 }

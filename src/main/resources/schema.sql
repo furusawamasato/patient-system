@@ -1,5 +1,13 @@
+CREATE TABLE IF NOT EXISTS lists (
+    list_id INT PRIMARY KEY,
+    name VARCHAR(50),
+    latestBookingDate DATE,
+    place VARCHAR(20)
+);
+
 CREATE TABLE IF NOT EXISTS patients (
     id INTEGER AUTO_INCREMENT PRIMARY KEY,
+    list_id INT,
     name varchar(10),
     age INT,
     address varchar(100),
@@ -9,7 +17,9 @@ CREATE TABLE IF NOT EXISTS patients (
     diseaseName varchar(50),
     symptoms varchar(20),
     allergy varchar(20),
-    PMH varchar(100)
+    PMH varchar(100),
+    latestBookingDate DATE,
+    place VARCHAR(20)
 );
 
 CREATE TABLE IF NOT EXISTS bookingLists (
@@ -19,8 +29,7 @@ CREATE TABLE IF NOT EXISTS bookingLists (
     bookingDate DATE,
     bookingTime TIME,
     place varchar(10),
-
-    FOREIGN KEY (id) REFERENCES patients(id)  ON DELETE CASCADE
+    FOREIGN KEY (id) REFERENCES patients(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS users (

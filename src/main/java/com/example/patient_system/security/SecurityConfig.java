@@ -36,7 +36,7 @@ public class SecurityConfig {
             .formLogin(login -> login
                     .loginProcessingUrl("/login")
                     .loginPage("/login")
-                    .defaultSuccessUrl("/albums")
+                    .defaultSuccessUrl("/patients")
                     .failureUrl("/login?error")
                     .permitAll());
         return http.build();
