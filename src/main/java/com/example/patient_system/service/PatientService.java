@@ -1,7 +1,7 @@
 package com.example.patient_system.service;
 
 import com.example.patient_system.repository.PatientRepository;
-
+import com.example.patient_system.entity.BookingList;
 import com.example.patient_system.entity.Patient;
 import com.example.patient_system.form.PatientForm;
 
@@ -47,5 +47,8 @@ public class PatientService {
             throw new IllegalArgumentException("ID does not match");
         }
         patientsRepository.updatePatient(patient);
+    }
+    public List<BookingList> getSelect() {
+        return patientsRepository.getSelect();
     }
 }

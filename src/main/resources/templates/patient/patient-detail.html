@@ -27,6 +27,7 @@
     </style>
 </head>
 <body>
+    <div th:replace="~{layout :: header}"></div>
 <div class="container mt-5">
 
     <h2 class="text-center mb-4">患者詳細</h2>
@@ -47,8 +48,9 @@
 
             <!-- 患者情報編集ボタン -->
             <form th:action="@{/patients/{id}/edit(id=${patients.id})}" method="get" class="text-center mt-3">
-                <button type="submit" class="btn btn-warning">患者情報を編集</button>
+                <button type="submit" class="btn btn-outline-warning">患者情報を編集<i class="bi bi-pen"></i></button>
             </form>
+            <br></br>
         </div>
 
         <!-- 予約リストセクション -->
@@ -72,43 +74,36 @@
                         <td th:text="${bookingList.place}"></td>
                         <td>
                             <form th:action="@{/patients/{id}/bookingLists/{bookingId}/delete(id=${patients.id}, bookingId=${bookingList.bookingId})}" method="post">
-                                <button type="submit" class="btn btn-danger btn-sm">削除</button>
+                                <button type="submit" class="btn btn-outline-danger btn-sm">削除<i class="bi bi-trash"></i></button>
                             </form>
                         </td>
-                        <td>
+                        <!-- <td>
                             <form th:action="@{/patients/{id}/bookingLists/{bookingId}/edit(id=${patients.id}, bookingId=${bookingList.bookingId})}" method="get">
-                                <button type="submit" class="btn btn-secondary btn-sm">編集</button>
+                                <button type="submit" class="btn btn-outline-warning btn-sm">編集<i class="bi bi-pen"></i></button>
                             </form>
-                        </td>
+                        </td> -->
                     </tr>
                 </tbody>
             </table>
 
             <!-- 予約追加リンク -->
             <div class="text-center mt-3">
-                <a th:href="@{/patients/{id}/bookingLists/new(id=${patients.id})}" class="btn btn-success">予約追加</a>
+                <a th:href="@{/patients/{id}/bookingLists/new(id=${patients.id})}" class="btn btn-outline-success">予約追加<i class="bi bi-plus-circle"></i></a>
             </div>
         </div>
     </div>
-//<<<<<<< main
+    <br></br>
 
-    <!-- 戻るボタン -->
-    <div class="text-center mt-4">
-        <form th:action="@{/patients}" method="get">
-            <button type="submit" class="btn btn-outline-primary">一覧に戻る</button>
-        </form>
-    </div>
-</div>
 
 <!-- Bootstrap Script -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-//=======
+
     
     
     <a href="/patients">一覧に戻る</a>
         <!-- BootstrapのJS（必要に応じて） -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-//>>>>>>> main
+
 </body>
 </html>
