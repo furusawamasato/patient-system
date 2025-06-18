@@ -1,5 +1,6 @@
 package com.example.patient_system.mapper;
 
+import com.example.patient_system.entity.BookingList;
 import com.example.patient_system.entity.Patient;
 
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.annotations.Delete;
@@ -30,4 +32,8 @@ public interface PatientMapper {
 
     @Update("UPDATE patients SET name = #{name}, age = #{age}, gender = #{gender}, bloodType = #{bloodType}, diseaseName = #{diseaseName}, symptoms = #{symptoms} WHERE id = #{id}")
     void updatePatient(Patient patient);
+
+    @Select("SELECT b.name, a.bookingDate, a.bookingTime, a.place FROM patients as b JOIN bookingLists as a ON a.id = b.id")
+    @ResultMap("com.example.patient_system.mapper.PatientMapper.BookingListResultMap")
+    List<BookingList> select();
 }

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.patient_system.mapper.PatientMapper">
+
+    <!-- Patient の ResultMap -->
+    <resultMap id="PatientResultMap" type="com.example.patient_system.entity.Patient">
+        <result property="name" column="name" />
+        <!-- 他の Patient プロパティ（id, age, gender など）はクエリにないためマッピング不要 -->
+    </resultMap>
+
+    <!-- BookingList の ResultMap -->
+    <resultMap id="BookingListResultMap" type="com.example.patient_system.entity.BookingList">
+        <result property="bookingDate" column="bookingDate" />
+        <result property="bookingTime" column="bookingTime" />
+        <result property="place" column="place" />
+        <!-- Patient オブジェクトのマッピング -->
+        <association property="patient" resultMap="PatientResultMap" />
+    </resultMap>
+
+</mapper>

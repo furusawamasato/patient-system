@@ -25,29 +25,27 @@ public class PatientController {
         this.bookingListService = bookingListService;
     }
 
-    // 患者一覧画面
+// 患者一覧画面
     @GetMapping
     public String patientList(Model model) {
         List<Patient> patients = patientService.getAllPatients();
         model.addAttribute("patients", patients);
 
-        List<BookingList> bookingLists = bookingListService.selectLatestBookingDate();
+        List<BookingList> bookingLists = patientService.getSelect();
         Map<Long, BookingList> map = new HashMap<>();
         for (BookingList b : bookingLists) {
             map.merge(b.getId(), b, (existing, newVal) -> {
                 if (existing.getBookingDate().isBefore(newVal.getBookingDate()) ||
                     (existing.getBookingDate().isEqual(newVal.getBookingDate()) &&
-                     existing.getBookingTime().isBefore(newVal.getBookingTime()))) {
+                    existing.getBookingTime().isBefore(newVal.getBookingTime()))) {
                     return newVal;
                 }
                 return existing;
             });
         }
-
         model.addAttribute("bookingLists", new ArrayList<>(map.values()));
         return "patient/patient-list";
     }
-
     // 新規患者登録フォーム表示
     @GetMapping("/new")
     public String showForm(Model model) {

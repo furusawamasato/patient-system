@@ -23,6 +23,7 @@ public class BookingList {
     //場所
     private String place;
 
+    private Patient patient;
 
     private LocalDate latestBookingDate;
 }

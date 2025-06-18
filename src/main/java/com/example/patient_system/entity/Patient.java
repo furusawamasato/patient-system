@@ -2,6 +2,7 @@ package com.example.patient_system.entity;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -31,8 +32,11 @@ public class Patient {
 
     private LocalDateTime createdAt;
 
+    private List<BookingList> bookingLists; 
 
     private String place;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate latestBookingDate;
+
+
 }
