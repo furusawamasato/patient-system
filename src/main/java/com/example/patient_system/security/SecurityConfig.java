@@ -17,7 +17,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(requests -> requests
-                    .requestMatchers("/register", "/login", "/error").permitAll()
+                    .requestMatchers("/register", "/login", "/error", "/css/**", "/img/**").permitAll()
                     .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                     // h2-consoleでログインを無効
                     .requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")).permitAll()
