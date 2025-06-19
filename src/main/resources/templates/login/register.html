@@ -15,7 +15,7 @@
 
     <!-- 登録フォーム -->
     <form th:action="@{/register}" th:object="${userForm}" method="post" class="border rounded p-4 bg-light">
-
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
         <div class="mb-3">
             <label for="username" class="form-label">ユーザ名：</label>
             <input type="text" id="username" class="form-control" th:field="*{username}" />

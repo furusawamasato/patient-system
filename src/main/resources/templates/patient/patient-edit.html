@@ -18,22 +18,22 @@
           th:object="${patient}" method="post" class="border rounded p-4 bg-light">
 
         <div class="mb-3">
-            <label>名前：</label>
+            <label>名前</label>
             <input type="text" th:field="*{name}" />
         </div>
         <div>
-            <label>年齢：</label>
+            <label>年齢</label>
             <input type="number" th:field="*{age}" />
         </div>
         <div>
-            <label>性別：</label>
+            <label>性別</label>
             <select th:field="*{gender}">
                 <option value="男性">男性</option>
                 <option value="女性">女性</option>
             </select>
         </div>
         <div>
-            <label>血液型：</label>
+            <label>血液型</label>
             <select th:field="*{bloodType}">
                 <option value="A型">A型</option>
                 <option value="B型">B型</option>
@@ -42,11 +42,11 @@
             </select>
         </div>
         <div>
-            <label>病名：</label>
+            <label>病名</label>
             <input type="text" th:field="*{diseaseName}" />
         </div>
         <div>
-            <label>症状：</label>
+            <label>症状</label>
             <input type="text" th:field="*{symptoms}" />
         </div>
         <button type="submit" class="btn btn-outline-primary">変更</button>
